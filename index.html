@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Growth Tool</title>
+</head>
+
+<body>
+
+<h1>🔥 TikTok Growth Tool</h1>
+
+<p>اكتب اسم حساب TikTok:</p>
+
+<input id="username" type="text" placeholder="اسم الحساب">
+
+<button onclick="analyze()">تحليل</button>
+
+<h2 id="result"></h2>
+
+<script>
+function analyze() {
+    let username = document.getElementById("username").value;
+
+    if (username === "") {
+        document.getElementById("result").innerText =
+            "اكتب اسم الحساب أولاً";
+        return;
+    }
+
+    document.getElementById("result").innerText =
+        "تم إدخال الحساب: @" + username;
+}
+</script>
+
+</body>
+</html>
