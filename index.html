@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TikTok Analytics Tool</title>
+<title>TikTok Video Analyzer</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -14,19 +16,18 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0f0f12;
+    background: #101014;
     color: white;
 }
 
 .container {
-    max-width: 900px;
+    max-width: 700px;
     margin: auto;
     padding: 20px;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 10px;
 }
 
 .subtitle {
@@ -35,18 +36,18 @@ h1 {
 }
 
 .card {
-    background: #1b1b20;
+    background: #1c1c22;
     padding: 20px;
-    border-radius: 16px;
     margin-top: 20px;
+    border-radius: 16px;
 }
 
 input {
     width: 100%;
-    padding: 13px;
-    margin: 7px 0;
-    border: 1px solid #444;
+    padding: 14px;
+    margin-top: 10px;
     border-radius: 10px;
+    border: 1px solid #444;
     background: #111;
     color: white;
     font-size: 16px;
@@ -56,7 +57,7 @@ button {
     width: 100%;
     padding: 14px;
     margin-top: 12px;
-    border: 0;
+    border: none;
     border-radius: 10px;
     background: #ff0050;
     color: white;
@@ -64,140 +65,145 @@ button {
     font-weight: bold;
 }
 
-button:hover {
-    opacity: .9;
-}
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.stat {
-    background: #25252c;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.stat strong {
-    display: block;
-    font-size: 22px;
-    margin-top: 5px;
+button:active {
+    transform: scale(.98);
 }
 
 .result {
+    margin-top: 20px;
     line-height: 1.8;
 }
 
-.good {
+.link {
+    direction: ltr;
+    text-align: left;
+    word-break: break-all;
+    background: #111;
     padding: 12px;
-    background: #183d27;
     border-radius: 10px;
-    margin-top: 10px;
 }
 
-.warning {
-    padding: 12px;
-    background: #49351a;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-ul {
-    padding-right: 25px;
-}
-
-@media (max-width: 600px) {
-    .stats {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>🔥 TikTok Analytics Tool</h1>
+<h1>🔥 TikTok Video Analyzer</h1>
 
 <p class="subtitle">
-أداة تحليل أداء الفيديوهات واقتراح تحسينات للمحتوى
+أداة تحليل فيديو TikTok
 </p>
 
 <div class="card">
 
-<h2>📊 أدخل بيانات الفيديو</h2>
+<h2>🔗 رابط الفيديو</h2>
 
-<input id="views" type="number" placeholder="عدد المشاهدات">
+<input
+    id="videoUrl"
+    type="url"
+    placeholder="ضع رابط فيديو TikTok هنا"
+>
 
-<input id="likes" type="number" placeholder="عدد الإعجابات">
-
-<input id="comments" type="number" placeholder="عدد التعليقات">
-
-<input id="shares" type="number" placeholder="عدد المشاركات">
-
-<input id="followers" type="number" placeholder="عدد المتابعين">
-
-<button onclick="analyze()">تحليل الفيديو</button>
+<button onclick="analyzeVideo()">
+تحليل الفيديو
+</button>
 
 </div>
 
-<div id="output"></div>
+<div id="result"></div>
 
 </div>
+
 
 <script>
 
-function number(id) {
-    return Number(document.getElementById(id).value) || 0;
-}
+function analyzeVideo() {
 
-function formatNumber(value) {
-    return new Intl.NumberFormat('ar').format(Math.round(value));
-}
+    const url =
+        document.getElementById("videoUrl").value.trim();
 
-function analyze() {
+    const result =
+        document.getElementById("result");
 
-    const views = number("views");
-    const likes = number("likes");
-    const comments = number("comments");
-    const shares = number("shares");
-    const followers = number("followers");
 
-    const output = document.getElementById("output");
+    if (url === "") {
 
-    if (views <= 0) {
-        output.innerHTML = `
+        result.innerHTML = `
         <div class="card">
-            ❌ أدخل عدد المشاهدات أولاً.
-        </div>`;
+            ❌ ضع رابط فيديو TikTok أولاً.
+        </div>
+        `;
+
         return;
     }
 
-    const likeRate = (likes / views) * 100;
-    const commentRate = (comments / views) * 100;
-    const shareRate = (shares / views) * 100;
 
-    const engagement =
-        ((likes + comments + shares) / views) * 100;
+    if (!url.includes("tiktok.com")) {
 
-    const followerConversion =
-        followers > 0
-        ? (followers / views) * 100
-        : 0;
+        result.innerHTML = `
+        <div class="card">
+            ❌ الرابط لا يبدو كرابط TikTok صحيح.
+        </div>
+        `;
 
-    let evaluation = "";
+        return;
+    }
 
-    if (engagement >= 10) {
-        evaluation = `
-        <div class="good">
-        🔥 معدل التفاعل مرتفع جدًا بالنسبة للبيانات المدخلة.
-        </div>`;
-    } else if (engagement >= 5) {
-        evaluation = `
-        <div class="good">
-        👍
+
+    result.innerHTML = `
+
+    <div class="card result">
+
+        <h2>✅ تم استلام الرابط</h2>
+
+        <div class="link">
+            ${escapeHtml(url)}
+        </div>
+
+        <h3>📊 حالة التحليل</h3>
+
+        <p>
+        الرابط جاهز للتحليل.
+        </p>
+
+        <p>
+        ⚠️ حاليًا الموقع لا يجلب أرقام TikTok تلقائيًا،
+        لأن ذلك يحتاج إلى مصدر بيانات/API مناسب.
+        </p>
+
+        <h3>🚀 ما سنضيفه لاحقًا</h3>
+
+        <ul>
+            <li>👁️ عدد المشاهدات</li>
+            <li>❤️ عدد الإعجابات</li>
+            <li>💬 عدد التعليقات</li>
+            <li>🔄 عدد المشاركات</li>
+            <li>📈 معدل التفاعل</li>
+            <li>💡 اقتراحات لتحسين الفيديو</li>
+        </ul>
+
+    </div>
+
+    `;
+
+}
+
+
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+
+</html>
