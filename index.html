@@ -3,43 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TikTok Growth Tool</title>
+
+<title>TikTok Analytics Tool</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial;
-    background: #111;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f12;
     color: white;
-    text-align: center;
-    padding: 30px;
 }
 
 .container {
-    max-width: 500px;
+    max-width: 900px;
     margin: auto;
+    padding: 20px;
 }
 
-input, button {
-    width: 90%;
-    padding: 15px;
-    margin: 10px;
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+}
+
+.card {
+    background: #1b1b20;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin: 7px 0;
+    border: 1px solid #444;
     border-radius: 10px;
-    border: none;
+    background: #111;
+    color: white;
+    font-size: 16px;
 }
 
 button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 10px;
     background: #ff0050;
     color: white;
-    font-size: 18px;
-    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: .9;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.stat {
+    background: #25252c;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    font-size: 22px;
+    margin-top: 5px;
 }
 
 .result {
-    margin-top: 25px;
-    padding: 20px;
-    background: #222;
-    border-radius: 15px;
-    text-align: right;
+    line-height: 1.8;
+}
+
+.good {
+    padding: 12px;
+    background: #183d27;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.warning {
+    padding: 12px;
+    background: #49351a;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+ul {
+    padding-right: 25px;
+}
+
+@media (max-width: 600px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
@@ -48,52 +122,82 @@ button {
 
 <div class="container">
 
-<h1>🔥 TikTok Growth Tool</h1>
+<h1>🔥 TikTok Analytics Tool</h1>
 
-<input id="username" placeholder="اكتب اسم حساب TikTok">
+<p class="subtitle">
+أداة تحليل أداء الفيديوهات واقتراح تحسينات للمحتوى
+</p>
 
-<button onclick="analyze()">تحليل الحساب</button>
+<div class="card">
 
-<div id="result" class="result">
-النتائج ستظهر هنا
+<h2>📊 أدخل بيانات الفيديو</h2>
+
+<input id="views" type="number" placeholder="عدد المشاهدات">
+
+<input id="likes" type="number" placeholder="عدد الإعجابات">
+
+<input id="comments" type="number" placeholder="عدد التعليقات">
+
+<input id="shares" type="number" placeholder="عدد المشاركات">
+
+<input id="followers" type="number" placeholder="عدد المتابعين">
+
+<button onclick="analyze()">تحليل الفيديو</button>
+
 </div>
+
+<div id="output"></div>
 
 </div>
 
 <script>
 
+function number(id) {
+    return Number(document.getElementById(id).value) || 0;
+}
+
+function formatNumber(value) {
+    return new Intl.NumberFormat('ar').format(Math.round(value));
+}
+
 function analyze() {
 
-    let username = document.getElementById("username").value.trim();
+    const views = number("views");
+    const likes = number("likes");
+    const comments = number("comments");
+    const shares = number("shares");
+    const followers = number("followers");
 
-    if (username === "") {
-        document.getElementById("result").innerHTML =
-        "❌ اكتب اسم الحساب أولاً";
+    const output = document.getElementById("output");
+
+    if (views <= 0) {
+        output.innerHTML = `
+        <div class="card">
+            ❌ أدخل عدد المشاهدات أولاً.
+        </div>`;
         return;
     }
 
-    document.getElementById("result").innerHTML = `
-        <h2>📊 تحليل الحساب</h2>
+    const likeRate = (likes / views) * 100;
+    const commentRate = (comments / views) * 100;
+    const shareRate = (shares / views) * 100;
 
-        <p>👤 الحساب: @${username}</p>
+    const engagement =
+        ((likes + comments + shares) / views) * 100;
 
-        <h3>💡 أفكار فيديوهات</h3>
+    const followerConversion =
+        followers > 0
+        ? (followers / views) * 100
+        : 0;
 
-        <p>1️⃣ فيديو قصير يشرح معلومة مفيدة</p>
-        <p>2️⃣ فيديو سؤال وجواب</p>
-        <p>3️⃣ فيديو قبل وبعد</p>
+    let evaluation = "";
 
-        <h3>🏷️ هاشتاغات مقترحة</h3>
-
-        <p>#TikTok #FYP #ترند #اكسبلور</p>
-
-        <h3>📅 خطة بسيطة</h3>
-
-        <p>انشر 1–2 فيديو يوميًا واختبر أنواع محتوى مختلفة.</p>
-    `;
-}
-
-</script>
-
-</body>
-</html>
+    if (engagement >= 10) {
+        evaluation = `
+        <div class="good">
+        🔥 معدل التفاعل مرتفع جدًا بالنسبة للبيانات المدخلة.
+        </div>`;
+    } else if (engagement >= 5) {
+        evaluation = `
+        <div class="good">
+        👍
