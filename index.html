@@ -1,36 +1,98 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Growth Tool</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok Growth Tool</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+
+input, button {
+    width: 90%;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+button {
+    background: #ff0050;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.result {
+    margin-top: 25px;
+    padding: 20px;
+    background: #222;
+    border-radius: 15px;
+    text-align: right;
+}
+</style>
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>🔥 TikTok Growth Tool</h1>
 
-<p>اكتب اسم حساب TikTok:</p>
+<input id="username" placeholder="اكتب اسم حساب TikTok">
 
-<input id="username" type="text" placeholder="اسم الحساب">
+<button onclick="analyze()">تحليل الحساب</button>
 
-<button onclick="analyze()">تحليل</button>
+<div id="result" class="result">
+النتائج ستظهر هنا
+</div>
 
-<h2 id="result"></h2>
+</div>
 
 <script>
+
 function analyze() {
-    let username = document.getElementById("username").value;
+
+    let username = document.getElementById("username").value.trim();
 
     if (username === "") {
-        document.getElementById("result").innerText =
-            "اكتب اسم الحساب أولاً";
+        document.getElementById("result").innerHTML =
+        "❌ اكتب اسم الحساب أولاً";
         return;
     }
 
-    document.getElementById("result").innerText =
-        "تم إدخال الحساب: @" + username;
+    document.getElementById("result").innerHTML = `
+        <h2>📊 تحليل الحساب</h2>
+
+        <p>👤 الحساب: @${username}</p>
+
+        <h3>💡 أفكار فيديوهات</h3>
+
+        <p>1️⃣ فيديو قصير يشرح معلومة مفيدة</p>
+        <p>2️⃣ فيديو سؤال وجواب</p>
+        <p>3️⃣ فيديو قبل وبعد</p>
+
+        <h3>🏷️ هاشتاغات مقترحة</h3>
+
+        <p>#TikTok #FYP #ترند #اكسبلور</p>
+
+        <h3>📅 خطة بسيطة</h3>
+
+        <p>انشر 1–2 فيديو يوميًا واختبر أنواع محتوى مختلفة.</p>
+    `;
 }
+
 </script>
 
 </body>
